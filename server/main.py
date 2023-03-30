@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todos.db'
 db = SQLAlchemy(app)
 
@@ -19,6 +21,7 @@ def get_todos():
    return jsonify([{'id': todo.id, 'title': todo.title, 'completed': todo.completed} for todo in todos])
 
 @app.route('/api/todos', methods=['POST'])
+@cross_origin()
 def add_todo():
     title = request.json['title']
     todo = Todo(title=title)
@@ -27,6 +30,7 @@ def add_todo():
     return jsonify({'id': todo.id, 'title': todo.title})
 
 @app.route('/api/todos/<int:todo_id>', methods=['PATCH'])
+@cross_origin()
 def update_todo(todo_id):
     todo = Todo.query.get(todo_id)
     if not todo:
@@ -40,6 +44,7 @@ def update_todo(todo_id):
     return jsonify({'id': todo.id, 'title': todo.title, 'completed': todo.completed})
 
 @app.route('/api/todos/<int:id>', methods=['DELETE'])
+@cross_origin()
 def delete_todo(id):
     todo = Todo.query.get_or_404(id)
     db.session.delete(todo)
