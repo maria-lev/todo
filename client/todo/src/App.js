@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { getAllTodos, createTodo, updateTodo, deleteTodo } from "./api/api";
+import {
+  getAllTodos,
+  createTodo,
+  updateTodo,
+  deleteTodo,
+} from "./api/todos.api";
 
 function App() {
   const [todos, setTodos] = useState([]);
